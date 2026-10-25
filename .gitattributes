@@ -1,0 +1,2 @@
+# Icon manifest hashes require the original SVG bytes on Windows as well.
+assets/app-icons/*.svg -text

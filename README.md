@@ -2,7 +2,11 @@
 
 《捡手机》是一个可以通过 AI 添加剧情的交互式虚拟手机框架。你不需要重新制作手机界面，只需要准备人物设定、聊天记录和剧情要求，让 AI 填入故事数据。
 
-默认打开完整 App 测试预览：49 个 App 已安装，内页只有中性的测试文字，不含剧情或真实账号。桌面底部为四个 App。`/?preview=test` 也可进入相同测试版本；纯空白入口为 `/?template=blank`。
+本 Fork 默认打开互动故事 **《先别告诉她》**：林池鱼 × 王橹杰，校园平行设定、甜向双向暗恋。你捡到林池鱼的手机，通过微信、相册、加锁备忘录和模拟来电发现两人的心意，再选择归还方式，体验两个甜结局。全部情节为同人虚构，不代表真人私人生活。
+
+开始游玩后先查看“信息”里的许愿；详细提示在备忘录“从这里开始 · 游玩提示”。人物设定、素材来源和含剧透攻略见 [故事说明](stories/template/STORY.md)。
+
+原有完整 App 测试预览保留在 `/?preview=test`：49 个 App 已安装，内页为中性测试文字。纯空白入口仍为 `/?template=blank`。故事、测试预览与空白作品使用不同的作品 ID，玩家进度分别保存。
 
 ## 可以做什么
 
@@ -55,7 +59,7 @@ npm run preview
 
 ## 演示与截图
 
-[在线体验](https://keoyyo85.github.io/FoundPhone-Studio/) · [GitHub 仓库](https://github.com/keoyyo85/FoundPhone-Studio)
+[上游框架演示](https://keoyyo85.github.io/FoundPhone-Studio/) · [上游 GitHub 仓库](https://github.com/keoyyo85/FoundPhone-Studio) · [本 Fork](https://github.com/bluefish018/FoundPhone-Studio)
 
 | 桌面 | 设置 | 聊天 |
 | --- | --- | --- |

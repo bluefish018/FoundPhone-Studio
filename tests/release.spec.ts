@@ -1,10 +1,14 @@
 import { test, expect } from "@playwright/test";
-test("published default matches full test preview, four dock apps and updated status bar", async ({
+import { readFileSync } from "node:fs";
+import { compileStory } from "../src/story-engine/compiler";
+test("published full test preview retains four dock apps and updated status bar", async ({
   page,
   request,
 }) => {
-  const work = await (await request.get("/work.json")).json();
-  const preview = await (await request.get("/test-work.json")).json();
+  const work = await (await request.get("/test-work.json")).json();
+  const preview = compileStory(
+    JSON.parse(readFileSync("stories/test-preview/story.json", "utf8")),
+  ).work;
   expect(work.id).toBe("ui-test-phone-v2");
   expect(work.apps).toEqual(preview.apps);
   expect(work.data).toEqual(preview.data);
@@ -20,11 +24,11 @@ test("published default matches full test preview, four dock apps and updated st
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.setViewportSize({ width: 393, height: 852 });
-  await page.goto("/");
+  await page.goto("/?preview=test");
   await page.getByRole("button", { name: "轻触解锁" }).waitFor();
   await page
     .locator(".phone-screen")
-    .screenshot({ path: "docs/images/lock.png" });
+    .screenshot({ path: "outputs/release/lock.png" });
   await page.getByRole("button", { name: "轻触解锁" }).click();
   await expect(page.locator(".lock-screen")).toHaveCount(0);
   await expect(page.locator(".interactive-home")).toHaveCSS("opacity", "1");
@@ -34,7 +38,7 @@ test("published default matches full test preview, four dock apps and updated st
   await expect(page.locator(".status-wifi")).toBeVisible();
   await page
     .locator(".phone-screen")
-    .screenshot({ path: "docs/images/home.png" });
+    .screenshot({ path: "outputs/release/home.png" });
   await page
     .locator(".status-bar")
     .screenshot({ path: "outputs/release/status-bar.png" });
@@ -42,11 +46,9 @@ test("published default matches full test preview, four dock apps and updated st
     .getByRole("button", { name: "打开App Store", exact: true })
     .click();
   await page.getByPlaceholder("搜索全部App").fill("X");
-  const x = page
-    .locator(".runtime-library-row")
-    .filter({
-      has: page.locator(".library-app-title strong", { hasText: /^X$/ }),
-    });
+  const x = page.locator(".runtime-library-row").filter({
+    has: page.locator(".library-app-title strong", { hasText: /^X$/ }),
+  });
   await expect(x.locator("[data-original-icon=twitter] img")).toHaveAttribute(
     "src",
     /twitter\.svg$/,
@@ -72,7 +74,7 @@ test("published default matches full test preview, four dock apps and updated st
   );
   await page
     .locator(".phone-screen")
-    .screenshot({ path: "docs/images/settings.png" });
+    .screenshot({ path: "outputs/release/settings.png" });
   await page.reload();
   await page.getByRole("button", { name: "轻触解锁" }).click();
   await expect(page.locator(".dock [data-home-key]")).toHaveCount(4);
